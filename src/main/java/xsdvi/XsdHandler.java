@@ -66,6 +66,7 @@ public class XsdHandler {
             builder.setRoot(symbol);
         }
         processElementDeclarations(model.getComponents(XSConstants.ELEMENT_DECLARATION));
+		processTypeDeclarations(model.getComponents(XSConstants.TYPE_DEFINITION));
         
         if (rootNodeName == null) {
             builder.levelUp();
@@ -105,6 +106,19 @@ public class XsdHandler {
                     processElementDeclaration((XSElementDeclaration) map.item(i), null, isRoot);
                 }
             }
+	}
+
+	private void processTypeDeclarations(XSNamedMap map) {
+		for(int i=0; i<map.getLength(); i++) {
+			String name = map.item(i).getName();
+			boolean isRoot = name.equals(rootNodeName);
+			if (isRoot || rootNodeName == null) {
+				XSTypeDefinition typeDefinition = (XSTypeDefinition) map.item(i);
+				if (typeDefinition.getTypeCategory() == XSTypeDefinition.COMPLEX_TYPE) {
+					processComplexTypeDefinition((XSComplexTypeDefinition) typeDefinition);
+				}
+			}
+		}
 	}
 
 	/**
