@@ -390,10 +390,10 @@ public class XsdHandler {
 	 */
 	private String getConstraintString(XSAttributeUse attributeUse) {
 		if (attributeUse.getConstraintType()==XSConstants.VC_DEFAULT) {
-			return "default: " + attributeUse.getConstraintValue();
+			return "default: " + attributeUse.getValueConstraintValue().getNormalizedValue();
 		}
 		else if (attributeUse.getConstraintType()==XSConstants.VC_FIXED) {
-			return "fixed: " + attributeUse.getConstraintValue();
+			return "fixed: " + attributeUse.getValueConstraintValue().getNormalizedValue();
 		}
 		return null;
 	}
