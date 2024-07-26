@@ -27,6 +27,7 @@ import org.apache.xerces.xs.XSIDCDefinition;
 import org.apache.xerces.xs.XSModel;
 import org.apache.xerces.xs.XSModelGroup;
 import org.apache.xerces.xs.XSNamedMap;
+import org.apache.xerces.xs.XSObject;
 import org.apache.xerces.xs.XSObjectList;
 import org.apache.xerces.xs.XSParticle;
 import org.apache.xerces.xs.XSTerm;
@@ -63,7 +64,7 @@ public class XsdHandler {
 
     private static final Logger logger = Logger.getLogger(LoggerHelper.LOGGER_NAME);
     private final TreeBuilder builder;
-    private final Stack<XSElementDeclaration> stack;
+    private final Stack<XSObject> stack;
 
     private String rootNodeName;
     private boolean oneNodeOnly = false;
@@ -338,6 +339,7 @@ public class XsdHandler {
                 symbol.setStartYPosition(20); //default 50
             }
             builder.setRoot(symbol);
+            stack.push(complexTypeDefinition);
         }
 
         //PARTICLE
@@ -351,6 +353,10 @@ public class XsdHandler {
         XSWildcard wildcard = complexTypeDefinition.getAttributeWildcard();
         if (wildcard != null) {
             processAttributeWildcard(wildcard);
+        }
+
+        if (isRoot) {
+            stack.pop();
         }
     }
 
