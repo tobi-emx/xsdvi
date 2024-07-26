@@ -114,7 +114,9 @@ public class XsdHandler {
         for (Short rootType : rootTypeNames) {
             XSNamedMap map = model.getComponents(rootType);
             for (int i = 0; i < map.getLength(); i++) {
-                names.add(map.item(i).getName());
+                if (rootType == XSConstants.ELEMENT_DECLARATION || (rootType == XSConstants.TYPE_DEFINITION && ((XSTypeDefinition) map.item(i)).getTypeCategory() == XSTypeDefinition.COMPLEX_TYPE)) {
+                    names.add(map.item(i).getName());
+                }
             }
         }
         return names;
@@ -146,7 +148,6 @@ public class XsdHandler {
     private void processTypeDeclarations(XSNamedMap map) {
         for (int i = 0; i < map.getLength(); i++) {
             String name = map.item(i).getName();
-            System.err.println("Type: " + name);
             boolean isRoot = name.equals(rootNodeName);
             if (isRoot || rootNodeName == null) {
                 XSTypeDefinition typeDefinition = (XSTypeDefinition) map.item(i);
@@ -571,6 +572,7 @@ public class XsdHandler {
                 try {
                     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder dBuilder = factory.newDocumentBuilder();
+
                     ByteArrayInputStream input = new ByteArrayInputStream(annotationString.getBytes("UTF-8"));
                     Document doc = dBuilder.parse(input);
                     XPath xPath = XPathFactory.newInstance().newXPath();
@@ -579,7 +581,7 @@ public class XsdHandler {
                     for (int i = 0; i < nodeList.getLength(); i++) {
                         Node nNode = nodeList.item(i);
                         // Todo: split text string by element's width
-                        annotationsList.add(nNode.getTextContent());
+                        annotationsList.add(escapeForXML(nNode.getTextContent()));
                     }
                 } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException e) {
                     logger.log(Level.SEVERE, "Can''t retrieve the documentation: {0}", e.toString());
@@ -587,5 +589,35 @@ public class XsdHandler {
             }
         }
         return annotationsList;
+    }
+
+    static String escapeForXML(String s) {
+        if (s == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '"':
+                    sb.append("&quot;");
+                    break;
+                case '\'':
+                    sb.append("&apos;");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

@@ -50,8 +50,7 @@ public final class XsdVi {
     private static List<Short> rootTypes = null;
     private static final Map<String, Short> allowedRootTypes = Map.of(
             "element", XSConstants.ELEMENT_DECLARATION,
-            "type", XSConstants.TYPE_DEFINITION,
-            "group", XSConstants.MODEL_GROUP_DEFINITION);
+            "type", XSConstants.TYPE_DEFINITION);
     private static boolean oneNodeOnly = false;
     private static String outputPath = null;
 
