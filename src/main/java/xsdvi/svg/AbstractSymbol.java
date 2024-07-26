@@ -1,18 +1,19 @@
 package xsdvi.svg;
 
-import org.apache.commons.text.WordUtils;
-import xsdvi.utils.TreeElement;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.text.WordUtils;
+
+import xsdvi.utils.TreeElement;
 
 /**
  * @author Václav Slavìtínský
  *
  */
 public abstract class AbstractSymbol extends TreeElement {
+
     private SvgForXsd svg;
 
     protected int xPosition;
@@ -32,199 +33,195 @@ public abstract class AbstractSymbol extends TreeElement {
     protected static int prevYPosition;
 
     /**
-     * 
+     *
      */
-    public static final int PC_STRICT	= 1;
+    public static final int PC_STRICT = 1;
     /**
-     * 
+     *
      */
-    public static final int PC_SKIP		= 2;
+    public static final int PC_SKIP = 2;
     /**
-     * 
+     *
      */
-    public static final int PC_LAX		= 3;
-    
-    /**
-     * 
-     */
-    public static final int X_INDENT	= 45;
-    /**
-     * 
-     */
-    public static final int Y_INDENT	= 25;
+    public static final int PC_LAX = 3;
 
     /**
-     * 
+     *
      */
-    public static final int MIN_WIDTH	= 60;
+    public static final int X_INDENT = 45;
     /**
-     * 
+     *
      */
-    public static final int MAX_HEIGHT	= 46;
-    /**
-     * 
-     */
-    public static final int MID_HEIGHT	= 31;
-    /**
-     * 
-     */
-    public static final int MIN_HEIGHT	= 21;
+    public static final int Y_INDENT = 25;
 
+    /**
+     *
+     */
+    public static final int MIN_WIDTH = 60;
+    /**
+     *
+     */
+    public static final int MAX_HEIGHT = 46;
+    /**
+     *
+     */
+    public static final int MID_HEIGHT = 31;
+    /**
+     *
+     */
+    public static final int MIN_HEIGHT = 21;
 
     /**
      * @return
      */
     public int getXEnd() {
-            return xPosition + width;
+        return xPosition + width;
     }
 
     /**
      * @return
      */
     public int getYEnd() {
-            return yPosition + MAX_HEIGHT;
+        return yPosition + MAX_HEIGHT;
     }
 
     /**
      * @return
      */
     public int getXPosition() {
-            return xPosition;
+        return xPosition;
     }
 
     /**
      * @return
      */
     public int getYPosition() {
-            return yPosition;
+        return yPosition;
     }
 
     /**
      * @param xPos
      */
     public void setXPosition(int xPos) {
-            this.xPosition = xPos;
+        this.xPosition = xPos;
     }
 
     /**
      * @param yPos
      */
     public void setYPosition(int yPos) {
-            this.yPosition = yPos;
+        this.yPosition = yPos;
     }
 
     /**
      * @param startYPos
      */
     public void setStartYPosition(int startYPos) {
-            this.startYPosition = startYPos;
+        this.startYPosition = startYPos;
     }
-    
+
     /**
      * @param svgForXsd
      */
     public void setSvg(SvgForXsd svgForXsd) {
-            this.svg = svgForXsd;
+        this.svg = svgForXsd;
     }
 
     /**
      * @return
      */
     public SvgForXsd getSvg() {
-            return svg;
+        return svg;
     }
 
     /**
      * @param w
      */
     public void setWidth(int w) {
-            this.width = w;
+        this.width = w;
     }
 
     /**
      * @param h
      */
     public void setHeight(int h) {
-            this.height = h;
+        this.height = h;
     }
 
     /**
      * @param string
      */
     protected void print(String string) {
-            svg.print(string);
+        svg.print(string);
     }
 
     /**
-     * 
+     *
      */
     protected void drawGStart() {
-            print("<g id='"+code()+"' class='box' transform='translate("+xPosition+","+yPosition+")' data-desc-height='"+additionalHeight+"' data-desc-height-rest='" + additionalHeightRest + "' data-desc-x='" + prevXPosition +"'>");
+        print("<g id='" + code() + "' class='box' transform='translate(" + xPosition + "," + yPosition + ")' data-desc-height='" + additionalHeight + "' data-desc-height-rest='" + additionalHeightRest + "' data-desc-x='" + prevXPosition + "'>");
     }
 
     /**
-     * 
+     *
      */
     protected void drawGEnd() {
-            print("</g>\n");
+        print("</g>\n");
     }
 
     /**
-     * 
+     *
      */
     protected void drawConnection() {
-            if (isLastChild() && !isFirstChild()) {
-                    print("<line class='connection' id='p"+code()+"' x1='"+(10-X_INDENT)+"' y1='"+(((AbstractSymbol) getParent()).yPosition-yPosition+MAX_HEIGHT/2)+"' x2='"+(10-X_INDENT)+"' y2='"+(-15-Y_INDENT)+"'/>");
-                    print("<path class='connection' d='M"+(10-X_INDENT)+","+(-15-Y_INDENT)+" Q"+(10-X_INDENT)+",15 0,"+MAX_HEIGHT/2+"'/>");
+        if (isLastChild() && !isFirstChild()) {
+            print("<line class='connection' id='p" + code() + "' x1='" + (10 - X_INDENT) + "' y1='" + (((AbstractSymbol) getParent()).yPosition - yPosition + MAX_HEIGHT / 2) + "' x2='" + (10 - X_INDENT) + "' y2='" + (-15 - Y_INDENT) + "'/>");
+            print("<path class='connection' d='M" + (10 - X_INDENT) + "," + (-15 - Y_INDENT) + " Q" + (10 - X_INDENT) + ",15 0," + MAX_HEIGHT / 2 + "'/>");
+        } else {
+            if (hasParent()) {
+                print("<line class='connection' x1='" + (10 - X_INDENT) + "' y1='" + MAX_HEIGHT / 2 + "' x2='0' y2='" + MAX_HEIGHT / 2 + "'/>");
             }
-            else {
-                if (hasParent()) {
-                    print("<line class='connection' x1='"+(10-X_INDENT)+"' y1='"+MAX_HEIGHT/2+"' x2='0' y2='"+MAX_HEIGHT/2+"'/>");
-                }
-            }
+        }
     }
 
     /**
-     * 
+     *
      */
     protected void drawUse() {
-            if (hasChildren()) {
-                    String code = code();
-                    print("<use x='"+(width-1)+"' y='"+(MAX_HEIGHT/2-6)+"' xlink:href='#minus' id='s"+code+"' onclick='show(\""+code+"\")'/>");
-            }
+        if (hasChildren()) {
+            String code = code();
+            print("<use x='" + (width - 1) + "' y='" + (MAX_HEIGHT / 2 - 6) + "' xlink:href='#minus' id='s" + code + "' onclick='show(\"" + code + "\")'/>");
+        }
     }
 
     /**
-     * 
+     *
      */
     protected void drawMouseover() {
-            print("onmouseover='makeVisible(\""+code()+"\")' onmouseout='makeHidden(\""+code()+"\")'/>");
+        print("onmouseover='makeVisible(\"" + code() + "\")' onmouseout='makeHidden(\"" + code() + "\")'/>");
     }
 
     /**
-     * 
+     *
      */
     public void prepareBox() {
-            if (hasParent()) {
-                    xPosition = ((AbstractSymbol) getParent()).getXEnd() + X_INDENT;
-                    if (isFirstChild()) {
-                            yPosition = highestYPosition;
-                    }
-                    else {
-                            yPosition = highestYPosition + MAX_HEIGHT + Y_INDENT;
-                    }
+        if (hasParent()) {
+            xPosition = ((AbstractSymbol) getParent()).getXEnd() + X_INDENT;
+            if (isFirstChild()) {
+                yPosition = highestYPosition;
+            } else {
+                yPosition = highestYPosition + MAX_HEIGHT + Y_INDENT;
             }
-            else {
-                    xPosition = 20;
-                    yPosition = startYPosition;
-            }
-            width = getWidth();
-            height = getHeight();
-            highestYPosition = yPosition;
+        } else {
+            xPosition = 20;
+            yPosition = startYPosition;
+        }
+        width = getWidth();
+        height = getHeight();
+        highestYPosition = yPosition;
     }
 
     /**
-     * 
+     *
      */
     public abstract void draw();
 
@@ -246,15 +243,15 @@ public abstract class AbstractSymbol extends TreeElement {
         this.description = description;
     }
 
-    protected void processDescription(){
-        int wrapLength = (int)Math.round(width / 5.5);
-        List<String> stringsWithBreaks =new  ArrayList<>();
-        for (String descriptionString: description) {
+    protected void processDescription() {
+        int wrapLength = (int) Math.round(width / 5.5);
+        List<String> stringsWithBreaks = new ArrayList<>();
+        for (String descriptionString : description) {
             // add line breaks into description string
             String descriptionStringWithBreaks = WordUtils.wrap(descriptionString, wrapLength, "\n", true);
             descriptionStringArray = descriptionStringWithBreaks.split("\\R");
             stringsWithBreaks.addAll(Arrays.asList(descriptionStringWithBreaks.split("\\R")));
-            additionalHeight+=y_shift * stringsWithBreaks.size(); //descriptionStringArray.length;
+            additionalHeight += y_shift * stringsWithBreaks.size(); //descriptionStringArray.length;
         }
         descriptionStringArray = stringsWithBreaks.toArray(new String[0]);
         if (yPosition > prevYPosition && prevYPosition != 0) {
@@ -277,9 +274,9 @@ public abstract class AbstractSymbol extends TreeElement {
     }
 
     protected void drawDescription(int y_start) {
-        for (String descriptionLine: descriptionStringArray) {
+        for (String descriptionLine : descriptionStringArray) {
             y_start = y_start + y_shift;
-            print("<text x='5' y='" + y_start + "' class='desc'>"+descriptionLine+"</text>");
+            print("<text x='5' y='" + y_start + "' class='desc'>" + descriptionLine + "</text>");
         }
     }
 

@@ -13,34 +13,31 @@ import java.util.Scanner;
  * @author Alexander Dyuzhev
  */
 public class FileHelper {
-    
+
     /**
-     * 
+     *
      */
     public FileHelper() {
-            //
+        //
     }
-    
+
     public String readStringFromResourceFile(String resourceFile) {
         InputStream inputStream = null;
         try {
             inputStream = getClass().getClassLoader().getResourceAsStream(resourceFile);
             return readStringFromInputStream(inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }
         return "";
     }
-    
+
     private String readStringFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
         String line;
@@ -61,16 +58,15 @@ public class FileHelper {
         }*/
         return resultStringBuilder.toString();
     }
-    
+
     public void deleteFolder(Path path) {
         if (Files.exists(path)) {
             try {
                 Files.walk(path)
-                    .sorted(Comparator.reverseOrder())
+                        .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)
-                            .forEach(File::delete);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                        .forEach(File::delete);
+            } catch (IOException ex) {
             }
         }
     }
