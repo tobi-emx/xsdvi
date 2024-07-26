@@ -106,7 +106,12 @@ public final class XsdVi {
                     .build();
          
         static final Options options = new Options() {
-            { 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6797031893776761837L;
+
+			{ 
                 addOption(optionRootNodeName);
                 addOption(optionOneNodeOnly);
                 addOption(optionOutputPath);
@@ -114,7 +119,12 @@ public final class XsdVi {
         };
 
         static final Options optionsEmbodyStyle = new Options() {
-            {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 702296838422916825L;
+
+			{
                 addOption(optionRootNodeName);
                 addOption(optionOneNodeOnly);
                 addOption(optionOutputPath);
@@ -123,7 +133,12 @@ public final class XsdVi {
         };
         
         static final Options optionsGenerateStyle = new Options() {
-            {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -7868166441913860186L;
+
+			{
                 addOption(optionRootNodeName);
                 addOption(optionOneNodeOnly);
                 addOption(optionOutputPath);
@@ -132,7 +147,12 @@ public final class XsdVi {
         };
         
         static final Options optionsUseStyle = new Options() {
-            {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -2296504645200494193L;
+
+			{
                 addOption(optionRootNodeName);
                 addOption(optionOneNodeOnly);
                 addOption(optionOutputPath);
