@@ -153,7 +153,7 @@ public class SymbolElement extends AbstractSymbol {
      */
     @Override
     public void draw() {
-        print("<a href=\"#\" onclick=\"window.parent.location.href = window.parent.location.href.split('#')[0]  + '#element_" + name + "'\">");
+        // print("<a href=\"#\" onclick=\"window.parent.postMessage('changeLocation#element_" + name + "', *)\">");
 
         processDescription();
 
@@ -206,7 +206,7 @@ public class SymbolElement extends AbstractSymbol {
         drawConnection();
         drawUse();
         drawGEnd();
-        print("</a>");
+        //print("</a>");
     }
 
     /**

@@ -44,6 +44,7 @@ import xsdvi.svg.SymbolAny;
 import xsdvi.svg.SymbolAnyAttribute;
 import xsdvi.svg.SymbolAttribute;
 import xsdvi.svg.SymbolChoice;
+import xsdvi.svg.SymbolComplexType;
 import xsdvi.svg.SymbolElement;
 import xsdvi.svg.SymbolField;
 import xsdvi.svg.SymbolKey;
@@ -328,7 +329,7 @@ public class XsdHandler {
      */
     private void processComplexTypeDefinition(XSComplexTypeDefinition complexTypeDefinition, boolean isRoot) {
         if (isRoot) {
-            SymbolElement symbol = new SymbolElement();
+            SymbolComplexType symbol = new SymbolComplexType();
             symbol.setName(getTypeString(complexTypeDefinition));
             String ns = complexTypeDefinition.getNamespace();
             if (ns != null && !ns.equals(schemaNamespace)) {
