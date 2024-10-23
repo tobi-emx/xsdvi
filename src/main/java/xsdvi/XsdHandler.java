@@ -294,7 +294,7 @@ public class XsdHandler {
         symbol.setNillable(elementDeclaration.getNillable());
         symbol.setAbstr(elementDeclaration.getAbstract());
         symbol.setSubstitution(getSubstitutionString(elementDeclaration));
-        symbol.setDescription(getDocumentationString(elementDeclaration));
+        // symbol.setDescription(getDocumentationString(elementDeclaration));
         if (isRoot && oneNodeOnly) { // without Collapse All and Expand All buttons
             symbol.setStartYPosition(20); //default 50
         }
